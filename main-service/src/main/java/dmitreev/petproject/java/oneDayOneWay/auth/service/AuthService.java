@@ -3,6 +3,9 @@ package dmitreev.petproject.java.oneDayOneWay.auth.service;
 import dmitreev.petproject.java.oneDayOneWay.auth.dto.JwtRequest;
 import dmitreev.petproject.java.oneDayOneWay.auth.dto.JwtResponse;
 import dmitreev.petproject.java.oneDayOneWay.error.model.AppError;
+import dmitreev.petproject.java.oneDayOneWay.user.dto.RegistrationUserDto;
+import dmitreev.petproject.java.oneDayOneWay.user.dto.UserDto;
+import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import dmitreev.petproject.java.oneDayOneWay.user.service.UserService;
 import dmitreev.petproject.java.oneDayOneWay.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +36,14 @@ public class AuthService {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-//    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
-//        if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
-//            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
-//        }
-//        if (userService.findByUsername(registrationUserDto.getUsername()).isPresent()) {
-//            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с указанным именем уже существует"), HttpStatus.BAD_REQUEST);
-//        }
-//        User user = userService.createNewUser(registrationUserDto);
-//        return ResponseEntity.ok(new UserDto(user.getId(), user.getUsername(), user.getEmail()));
-//    }
+    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
+        if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
+        }
+        if (userService.findByUsername(registrationUserDto.getUsername()).isPresent()) {
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с указанным именем уже существует"), HttpStatus.BAD_REQUEST);
+        }
+        User user = userService.createNewUser(registrationUserDto);
+        return ResponseEntity.ok(new UserDto(user.getId(), user.getUsername(), user.getEmail()));
+    }
 }

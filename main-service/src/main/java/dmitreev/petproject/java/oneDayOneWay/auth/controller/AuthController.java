@@ -2,6 +2,7 @@ package dmitreev.petproject.java.oneDayOneWay.auth.controller;
 
 import dmitreev.petproject.java.oneDayOneWay.auth.dto.JwtRequest;
 import dmitreev.petproject.java.oneDayOneWay.auth.service.AuthService;
+import dmitreev.petproject.java.oneDayOneWay.user.dto.RegistrationUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,8 @@ public class AuthController {
         return authService.createAuthToken(authRequest);
     }
 
-//    @PostMapping("/registration")
-//    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
-//        return authService.createNewUser(registrationUserDto);
-//    }
+    @PostMapping("/registration")
+    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
+        return authService.createNewUser(registrationUserDto);
+    }
 }

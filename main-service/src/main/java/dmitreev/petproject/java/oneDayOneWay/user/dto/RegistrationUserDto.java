@@ -1,8 +1,14 @@
 package dmitreev.petproject.java.oneDayOneWay.user.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistrationUserDto {
     private String username;
     private String password;

@@ -3,7 +3,6 @@ package dmitreev.petproject.java.oneDayOneWay.user.service;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.RegistrationUserDto;
 import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import dmitreev.petproject.java.oneDayOneWay.user.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +17,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class UserService implements UserDetailsService {
-    private  UserRepository userRepository;
-    private  RoleService roleService;
-    private  PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+    private RoleService roleService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
