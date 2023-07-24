@@ -2,48 +2,51 @@ package dmitreev.petproject.java.oneDayOneWay.auth.service;
 
 import dmitreev.petproject.java.oneDayOneWay.auth.dto.JwtRequest;
 import dmitreev.petproject.java.oneDayOneWay.auth.dto.JwtResponse;
-import dmitreev.petproject.java.oneDayOneWay.error.model.AppError;
+import dmitreev.petproject.java.oneDayOneWay.error.exception.BadRequestException;
+import dmitreev.petproject.java.oneDayOneWay.error.exception.UnauthorizedException;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.RegistrationUserDto;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.UserDto;
 import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import dmitreev.petproject.java.oneDayOneWay.user.service.UserService;
 import dmitreev.petproject.java.oneDayOneWay.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthService {
     private final UserService userService;
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
 
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
+    public ResponseEntity<?> createAuthToken(JwtRequest authRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Неправильный логин или пароль"), HttpStatus.UNAUTHORIZED);
+            throw new UnauthorizedException("Incorrect login or password.");
         }
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtils.generateToken(userDetails);
+        log.info("Token was received for the user {}.", authRequest.getUsername());
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
+    public ResponseEntity<?> createNewUser(RegistrationUserDto registrationUserDto) {
         if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Passwords don't match.");
         }
         if (userService.findByUsername(registrationUserDto.getUsername()).isPresent()) {
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с указанным именем уже существует"), HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("The user with the specified name already exists.");
         }
         User user = userService.createNewUser(registrationUserDto);
+        log.info("A new user has been registered with id {}.", user.getId());
         return ResponseEntity.ok(new UserDto(user.getId(), user.getUsername(), user.getEmail()));
     }
 }

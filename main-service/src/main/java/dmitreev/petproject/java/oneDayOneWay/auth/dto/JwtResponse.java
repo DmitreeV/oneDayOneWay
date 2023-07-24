@@ -1,10 +1,12 @@
 package dmitreev.petproject.java.oneDayOneWay.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class JwtResponse {
+
     private String token;
 }

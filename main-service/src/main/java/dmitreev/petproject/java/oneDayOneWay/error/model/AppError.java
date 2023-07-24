@@ -1,18 +1,21 @@
 package dmitreev.petproject.java.oneDayOneWay.error.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class AppError {
     private int status;
-    private String message;
-    private Date timestamp;
+    private final String reason;
+    private final String message;
+    private final LocalDateTime timestamp;
 
-    public AppError(int status, String message) {
-        this.status = status;
+    public AppError(String reason, String message, LocalDateTime timestamp) {
+        this.reason = reason;
         this.message = message;
-        this.timestamp = new Date();
+        this.timestamp = timestamp;
     }
 }
