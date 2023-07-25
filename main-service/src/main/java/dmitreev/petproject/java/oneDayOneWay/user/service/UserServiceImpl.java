@@ -1,10 +1,16 @@
 package dmitreev.petproject.java.oneDayOneWay.user.service;
 
+import dmitreev.petproject.java.oneDayOneWay.error.exception.NotFoundException;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.RegistrationUserDto;
+import dmitreev.petproject.java.oneDayOneWay.user.dto.UserDto;
+import dmitreev.petproject.java.oneDayOneWay.user.mapper.UserMapper;
 import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import dmitreev.petproject.java.oneDayOneWay.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,10 +25,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class UserService implements UserDetailsService {
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserDetailsService, AdminUserService {
     private UserRepository userRepository;
     private RoleService roleService;
     private PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -65,4 +73,34 @@ public class UserService implements UserDetailsService {
         log.info("Saved new user with id {}.", user.getId());
         return userRepository.save(user);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDto getUserById(Long userId) {
+        log.info("User with id {} data received.", userId);
+        return userMapper.toUserDto(getUser(userId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserDto> getAllUsers(Integer from, Integer size) {
+        Pageable pageable = PageRequest.of(from, size);
+        log.info("Received a list of all users with size of {}.", size);
+        return userRepository.findAll(pageable).stream()
+                .map(userMapper::toUserDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        getUser(userId);
+        userRepository.deleteById(userId);
+        log.info("The user with id {} has been deleted.", userId);
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException(String.format("User with id=%d not found", userId)));
+    }
 }
+

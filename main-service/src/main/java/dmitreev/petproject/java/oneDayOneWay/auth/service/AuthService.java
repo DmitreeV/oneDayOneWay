@@ -7,7 +7,7 @@ import dmitreev.petproject.java.oneDayOneWay.error.exception.UnauthorizedExcepti
 import dmitreev.petproject.java.oneDayOneWay.user.dto.RegistrationUserDto;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.UserDto;
 import dmitreev.petproject.java.oneDayOneWay.user.model.User;
-import dmitreev.petproject.java.oneDayOneWay.user.service.UserService;
+import dmitreev.petproject.java.oneDayOneWay.user.service.UserServiceImpl;
 import dmitreev.petproject.java.oneDayOneWay.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthService {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
 

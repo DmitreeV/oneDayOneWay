@@ -1,6 +1,6 @@
 package dmitreev.petproject.java.oneDayOneWay.config;
 
-import dmitreev.petproject.java.oneDayOneWay.user.service.UserService;
+import dmitreev.petproject.java.oneDayOneWay.user.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -19,11 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
-    private UserService userService;
+    private UserServiceImpl userService;
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public void setUserService(UserServiceImpl userService) {
         this.userService = userService;
     }
 

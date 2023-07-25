@@ -1,3 +1,11 @@
 Todo
 
 - реализовывать основную логику
+
+* Основные сущности:
+- Way
+- Location
+- City
+- Category
+- Comment
+- Place
