@@ -8,4 +8,5 @@ Todo
 - City
 - Category
 - Comment
-- Place
+- Place ✅
+- Image
