@@ -1,5 +1,6 @@
 package dmitreev.petproject.java.oneDayOneWay.place.dto;
 
+import dmitreev.petproject.java.oneDayOneWay.city.dto.CityResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.UserShortDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +17,5 @@ public class PlaceResponseDto {
     private String title;
     private String description;
     private UserShortDto creator;
+    private CityResponseDto city;
 }

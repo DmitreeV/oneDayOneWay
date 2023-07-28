@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @Getter
 @Setter
@@ -15,6 +16,10 @@ public class PlaceRequestDto {
 
     @NotBlank(message = "'title' can not be blank")
     private String title;
+
     @NotBlank(message = "'description' can not be blank")
     private String description;
+
+    @Positive
+    private Long city;
 }
