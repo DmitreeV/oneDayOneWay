@@ -1,4 +1,4 @@
-package dmitreev.petproject.java.oneDayOneWay.city.dto;
+package dmitreev.petproject.java.oneDayOneWay.category.dto;
 
 import lombok.*;
 
@@ -7,8 +7,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CityResponseDto {
+public class CategoryResponseDto {
 
     private Long id;
+
     private String name;
 }
+

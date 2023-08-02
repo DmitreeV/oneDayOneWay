@@ -1,4 +1,4 @@
-package dmitreev.petproject.java.oneDayOneWay.city.model;
+package dmitreev.petproject.java.oneDayOneWay.category.model;
 
 import lombok.*;
 
@@ -10,17 +10,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "cities")
-public class City {
+@Table(name = "categories")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Long id;
 
     @Column(name = "name")
     private String name;
-
-//    @OneToMany(mappedBy = "way", cascade = CascadeType.ALL)
-//    private Set<Way> ways;
 }

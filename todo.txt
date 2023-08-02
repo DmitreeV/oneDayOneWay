@@ -5,8 +5,8 @@ Todo
 * Основные сущности:
 - Way
 - Location
-- City
+- City ✅
 - Category
 - Comment
-- Place ✅
+- Place ✅ //рещить проблему создания нового места с городом
 - Image

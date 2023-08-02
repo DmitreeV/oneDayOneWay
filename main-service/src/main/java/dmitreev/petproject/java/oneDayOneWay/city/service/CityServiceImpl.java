@@ -35,7 +35,7 @@ public class CityServiceImpl implements CityService {
         } catch (DataIntegrityViolationException e) {
             throw new ConflictException("City is already exists.");
         }
-        log.info("Saved new city : {}.", cityRequestDto);
+        log.info("Saved new city : {}.", city.getName());
         return cityMapper.toCityDto(city);
     }
 

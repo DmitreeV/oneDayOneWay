@@ -1,15 +1,13 @@
 package dmitreev.petproject.java.oneDayOneWay.place.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlaceRequestDto {
@@ -22,4 +20,7 @@ public class PlaceRequestDto {
 
     @Positive
     private Long city;
+
+    @Positive
+    private Long category;
 }

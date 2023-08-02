@@ -1,4 +1,4 @@
-package dmitreev.petproject.java.oneDayOneWay.city.dto;
+package dmitreev.petproject.java.oneDayOneWay.category.dto;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CityRequestDto {
+public class CategoryRequestDto {
 
     @NotBlank(message = "'name' can not be blank")
     private String name;

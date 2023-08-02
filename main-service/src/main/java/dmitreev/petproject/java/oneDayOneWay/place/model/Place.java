@@ -1,17 +1,18 @@
 package dmitreev.petproject.java.oneDayOneWay.place.model;
 
+import dmitreev.petproject.java.oneDayOneWay.category.model.Category;
 import dmitreev.petproject.java.oneDayOneWay.city.model.City;
 import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
 @Table(name = "places")
 public class Place {
 
@@ -34,7 +35,10 @@ public class Place {
     @JoinColumn(name = "city_id")
     private City city;
 
-    //Category
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     //List<Image>
     //List<Comment>
 }

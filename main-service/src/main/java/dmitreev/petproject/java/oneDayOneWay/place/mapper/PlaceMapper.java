@@ -10,7 +10,9 @@ import org.mapstruct.Mapping;
 public interface PlaceMapper {
 
     PlaceResponseDto toPlaceDto(Place place);
+
     @Mapping(target = "city.id", source = "city")
+    @Mapping(target = "category.id", source = "category")
     Place toPlace(PlaceRequestDto placeRequestDto);
 }
 
