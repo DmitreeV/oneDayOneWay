@@ -2,8 +2,6 @@ package dmitreev.petproject.java.oneDayOneWay.place.service;
 
 import dmitreev.petproject.java.oneDayOneWay.category.model.Category;
 import dmitreev.petproject.java.oneDayOneWay.category.repository.CategoryRepository;
-import dmitreev.petproject.java.oneDayOneWay.city.model.City;
-import dmitreev.petproject.java.oneDayOneWay.city.repository.CityRepository;
 import dmitreev.petproject.java.oneDayOneWay.error.exception.NotFoundException;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceRequestDto;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceResponseDto;
@@ -25,7 +23,6 @@ public class PlaceServiceImpl implements PlaceService {
 
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
-    private final CityRepository cityRepository;
     private final CategoryRepository categoryRepository;
     private final PlaceMapper placeMapper;
 
@@ -34,11 +31,9 @@ public class PlaceServiceImpl implements PlaceService {
         User user = getUser(userId);
         Place place = placeMapper.toPlace(placeRequestDto);
         Category category = getCategory(placeRequestDto.getCategory());
-        City city = getCity(placeRequestDto.getCity());
 
         place.setCreator(user);
         place.setCategory(category);
-        place.setCity(city);
         log.info("User saved new place {}.", place.getTitle());
         return placeMapper.toPlaceDto(placeRepository.save(place));
     }
@@ -46,11 +41,6 @@ public class PlaceServiceImpl implements PlaceService {
     private User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(String.format("User with userId=%d not found", userId)));
-    }
-
-    private City getCity(Long cityId) {
-        return cityRepository.findById(cityId).orElseThrow(() ->
-                new NotFoundException(String.format("City with cityId=%d not found", cityId)));
     }
 
     private Category getCategory(Long categoryId) {

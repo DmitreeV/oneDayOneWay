@@ -6,7 +6,7 @@ Todo
 - Way
 - Location
 - City ✅
-- Category
+- Category ✅
 - Comment
-- Place ✅ //рещить проблему создания нового места с городом
+- Place ✅
 - Image

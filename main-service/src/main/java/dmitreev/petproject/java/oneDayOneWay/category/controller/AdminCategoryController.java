@@ -22,7 +22,21 @@ public class AdminCategoryController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new category.")
-    public CategoryResponseDto saveCategory(@Valid @RequestBody CategoryRequestDto categoryRequestDto) {
+    public CategoryResponseDto createCategory(@Valid @RequestBody CategoryRequestDto categoryRequestDto) {
         return categoryService.createCategory(categoryRequestDto);
+    }
+
+    @DeleteMapping("/{catId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a category.")
+    public void deleteCategory(@PathVariable Long catId) {
+        categoryService.deleteCategory(catId);
+    }
+
+    @PatchMapping("/{catId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Update a category.")
+    public CategoryResponseDto updateCategory(@PathVariable Long catId, @Valid @RequestBody CategoryRequestDto categoryRequestDto) {
+        return categoryService.updateCategory(catId, categoryRequestDto);
     }
 }

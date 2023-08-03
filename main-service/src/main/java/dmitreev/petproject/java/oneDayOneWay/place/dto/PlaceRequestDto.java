@@ -19,8 +19,5 @@ public class PlaceRequestDto {
     private String description;
 
     @Positive
-    private Long city;
-
-    @Positive
     private Long category;
 }
