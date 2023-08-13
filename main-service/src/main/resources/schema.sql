@@ -34,5 +34,7 @@ CREATE TABLE IF NOT EXISTS places (
     description VARCHAR(300)                               NOT NULL,
     creator_id BIGINT REFERENCES users (id) ON DELETE CASCADE,
     category_id BIGINT REFERENCES categories (id) ON DELETE CASCADE
+--     date_of_created TIMESTAMP WITHOUT TIME ZONE,
+--     preview_image_id BIGINT
     );
 
