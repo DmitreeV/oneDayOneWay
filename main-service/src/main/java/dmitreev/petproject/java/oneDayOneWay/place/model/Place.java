@@ -6,8 +6,6 @@ import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -37,24 +35,10 @@ public class Place {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-            mappedBy = "place")
-    private List<Image> images = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
-//    @Column(name = "preview_image_id")
-//    private Long previewImageId;
-//    @Column(name = "date_of_created")
-//    private LocalDateTime dateOfCreated;
-
-//    @PrePersist
-//    private void init() {
-//        dateOfCreated = LocalDateTime.now();
-//    }
-
-    public void addImageToPlace(Image image) {
-        image.setPlace(this);
-        images.add(image);
-    }
     //Location
     //List<Comment>
 }

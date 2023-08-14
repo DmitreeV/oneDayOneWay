@@ -9,4 +9,4 @@ Todo
 - Category ✅
 - Comment
 - Place ✅
-- Image
+- Image добавить таблицу в схему и запустить тест

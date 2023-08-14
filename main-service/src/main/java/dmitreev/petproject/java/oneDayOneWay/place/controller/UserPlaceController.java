@@ -8,10 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
@@ -28,12 +26,12 @@ public class UserPlaceController {
         return placeService.createPlace(userId, placeRequestDto);
     }
 
-    @PatchMapping(("/{placeId}"))
-    @ResponseStatus(value = HttpStatus.OK)
-    @Operation(summary = "Create a new photo to place by user.")
-    public PlaceResponseDto savePhotoToPlace(@PathVariable Long placeId,
-                                        @RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
-                                        @RequestParam("file3") MultipartFile file3) throws IOException {
-        return placeService.savePhotoToPlace(placeId, file1, file2, file3);
-    }
+//    @PatchMapping(("/{placeId}"))
+//    @ResponseStatus(value = HttpStatus.OK)
+//    @Operation(summary = "Create a new photo to place by user.")
+//    public PlaceResponseDto savePhotoToPlace(@PathVariable Long placeId,
+//                                        @RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
+//                                        @RequestParam("file3") MultipartFile file3) throws IOException {
+//        return placeService.savePhotoToPlace(placeId, file1, file2, file3);
+//    }
 }
