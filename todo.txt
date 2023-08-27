@@ -4,9 +4,10 @@ Todo
 
 * Основные сущности:
 - Way
-- Location
+- Location ✅
 - City ✅
 - Category ✅
 - Comment
-- Place ✅
-- Image добавить таблицу в схему и запустить тест
+- Place
+- User ✅
+- Image ✅

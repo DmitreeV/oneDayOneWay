@@ -9,5 +9,4 @@ public class OneDayOneWayApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OneDayOneWayApplication.class, args);
 	}
-
 }

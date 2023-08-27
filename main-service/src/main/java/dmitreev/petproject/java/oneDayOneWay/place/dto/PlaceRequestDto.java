@@ -3,6 +3,7 @@ package dmitreev.petproject.java.oneDayOneWay.place.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter
@@ -20,4 +21,12 @@ public class PlaceRequestDto {
 
     @Positive
     private Long category;
+
+    private String filename;
+
+    @NotNull(message = "'lat' can not be null")
+    private float lat;
+
+    @NotNull(message = "'lon' can not be null")
+    private float lon;
 }

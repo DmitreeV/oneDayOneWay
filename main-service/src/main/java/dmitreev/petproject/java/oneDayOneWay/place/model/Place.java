@@ -1,7 +1,6 @@
 package dmitreev.petproject.java.oneDayOneWay.place.model;
 
 import dmitreev.petproject.java.oneDayOneWay.category.model.Category;
-import dmitreev.petproject.java.oneDayOneWay.image.model.Image;
 import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import lombok.*;
 
@@ -35,10 +34,14 @@ public class Place {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private Image image;
+    @Column(name = "filename")
+    private String filename;
 
-    //Location
+    @Column(name = "latitude", nullable = false)
+    private float lat;
+
+    @Column(name = "longitude", nullable = false)
+    private float lon;
+
     //List<Comment>
 }

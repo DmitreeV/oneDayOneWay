@@ -3,6 +3,7 @@ package dmitreev.petproject.java.oneDayOneWay.place.service;
 import dmitreev.petproject.java.oneDayOneWay.category.model.Category;
 import dmitreev.petproject.java.oneDayOneWay.category.repository.CategoryRepository;
 import dmitreev.petproject.java.oneDayOneWay.error.exception.NotFoundException;
+import dmitreev.petproject.java.oneDayOneWay.location.model.Location;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceRequestDto;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.place.mapper.PlaceMapper;
@@ -12,8 +13,14 @@ import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import dmitreev.petproject.java.oneDayOneWay.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -25,6 +32,9 @@ public class PlaceServiceImpl implements PlaceService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final PlaceMapper placeMapper;
+
+    @Value("/Users/dmitreevalerko/dima/oneDayOneWay/photo")
+    private String uploadPath;
 
     @Override
     public PlaceResponseDto createPlace(Long userId, PlaceRequestDto placeRequestDto) {
@@ -38,42 +48,37 @@ public class PlaceServiceImpl implements PlaceService {
         return placeMapper.toPlaceDto(placeRepository.save(place));
     }
 
-//    @Override
-//    public PlaceResponseDto savePhotoToPlace(Long placeId, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
-//        Place place = getPlace(placeId);
-//
-//        Image image1;
-//        Image image2;
-//        Image image3;
-//        if (file1.getSize() != 0) {
-//            image1 = toImageEntity(file1);
-//            image1.setPreviewImage(true);
-//            place.addImageToPlace(image1);
-//        }
-//        if (file2.getSize() != 0) {
-//            image2 = toImageEntity(file2);
-//            place.addImageToPlace(image2);
-//        }
-//        if (file3.getSize() != 0) {
-//            image3 = toImageEntity(file3);
-//            place.addImageToPlace(image3);
-//        }
-//
-//        log.info("User saved new photo to place {}.", place.getTitle());
-////        Place placeFromDb = placeRepository.save(place);
-////        placeFromDb.setPreviewImageId(placeFromDb.getImages().get(0).getId());
-//        return placeMapper.toPlaceDto(placeRepository.save(place));
-//    }
-//
-//    private Image toImageEntity(MultipartFile file) throws IOException {
-//        Image image = new Image();
-//        image.setName(file.getName());
-//        image.setOriginalFileName(file.getOriginalFilename());
-//        image.setContentType(file.getContentType());
-//        image.setSize(file.getSize());
-//        image.setBytes(file.getBytes());
-//        return image;
-//    }
+    //add places to way
+    private void validateLocation(Location location, Place place) {
+        double distance;
+        double x1 = location.getLat();
+        double y1 = location.getLon();
+        double x2 = place.getLat();
+        double y2 = place.getLon();
+
+        distance = Math.exp(Math.sqrt(2) / Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        if (distance < 2) {
+
+        }
+    }
+
+    @Override
+    public PlaceResponseDto savePhotoToPlace(Long placeId, MultipartFile file) throws IOException {
+        Place place = getPlace(placeId);
+
+        if (file != null) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+            place.setFilename(resultFilename);
+        }
+        log.info("Saved new photo to place with id {}.", placeId);
+        return placeMapper.toPlaceDto(placeRepository.save(place));
+    }
 
     private User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->

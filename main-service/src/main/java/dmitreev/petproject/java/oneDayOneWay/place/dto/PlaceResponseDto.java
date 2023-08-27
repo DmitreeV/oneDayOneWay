@@ -16,4 +16,7 @@ public class PlaceResponseDto {
     private String description;
     private UserShortDto creator;
     private CategoryResponseDto category;
+    private String filename;
+    private float lat;
+    private float lon;
 }
