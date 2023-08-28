@@ -10,4 +10,5 @@ public interface PlaceService {
 
     PlaceResponseDto createPlace(Long userId, PlaceRequestDto placeRequestDto);
     PlaceResponseDto savePhotoToPlace(Long placeId, MultipartFile file) throws IOException;
+    PlaceResponseDto getPlaceById(Long placeId);
 }

@@ -36,4 +36,11 @@ public class UserPlaceController {
         return placeService.savePhotoToPlace(placeId, file);
     }
 
+    @GetMapping("/{placeId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a place by its Id.")
+    public PlaceResponseDto getPlaceById(@PathVariable Long placeId) {
+        return placeService.getPlaceById(placeId);
+    }
+
 }

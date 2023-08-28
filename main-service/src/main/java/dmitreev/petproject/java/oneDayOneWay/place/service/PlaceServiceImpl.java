@@ -3,7 +3,6 @@ package dmitreev.petproject.java.oneDayOneWay.place.service;
 import dmitreev.petproject.java.oneDayOneWay.category.model.Category;
 import dmitreev.petproject.java.oneDayOneWay.category.repository.CategoryRepository;
 import dmitreev.petproject.java.oneDayOneWay.error.exception.NotFoundException;
-import dmitreev.petproject.java.oneDayOneWay.location.model.Location;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceRequestDto;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.place.mapper.PlaceMapper;
@@ -31,6 +30,7 @@ public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+
     private final PlaceMapper placeMapper;
 
     @Value("/Users/dmitreevalerko/dima/oneDayOneWay/photo")
@@ -49,18 +49,18 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     //add places to way
-    private void validateLocation(Location location, Place place) {
-        double distance;
-        double x1 = location.getLat();
-        double y1 = location.getLon();
-        double x2 = place.getLat();
-        double y2 = place.getLon();
-
-        distance = Math.exp(Math.sqrt(2) / Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-        if (distance < 2) {
-
-        }
-    }
+//    private void validateLocation(Location location, Place place) {
+//        double distance;
+//        double x1 = location.getLat();
+//        double y1 = location.getLon();
+//        double x2 = place.getLat();
+//        double y2 = place.getLon();
+//
+//        distance = Math.exp(Math.sqrt(2) / Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+//        if (distance < 2) {
+//
+//        }
+//    }
 
     @Override
     public PlaceResponseDto savePhotoToPlace(Long placeId, MultipartFile file) throws IOException {
@@ -78,6 +78,13 @@ public class PlaceServiceImpl implements PlaceService {
         }
         log.info("Saved new photo to place with id {}.", placeId);
         return placeMapper.toPlaceDto(placeRepository.save(place));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PlaceResponseDto getPlaceById(Long placeId) {
+        log.info("Received a category with id {}.", placeId);
+        return placeMapper.toPlaceDto(getPlace(placeId));
     }
 
     private User getUser(Long userId) {

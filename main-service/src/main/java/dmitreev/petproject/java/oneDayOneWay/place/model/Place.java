@@ -42,6 +42,4 @@ public class Place {
 
     @Column(name = "longitude", nullable = false)
     private float lon;
-
-    //List<Comment>
 }

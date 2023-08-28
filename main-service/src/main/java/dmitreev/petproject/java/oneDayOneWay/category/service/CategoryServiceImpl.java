@@ -58,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public CategoryResponseDto getCategoryById(Long categoryId) {
-        log.info("Received a category with id {}.", categoryId);
+        log.info("Received a place with id {}.", categoryId);
         return categoryMapper.toCategoryDto(getCategory(categoryId));
     }
 
