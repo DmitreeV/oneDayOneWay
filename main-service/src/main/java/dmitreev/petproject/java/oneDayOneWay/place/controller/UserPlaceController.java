@@ -1,5 +1,7 @@
 package dmitreev.petproject.java.oneDayOneWay.place.controller;
 
+import dmitreev.petproject.java.oneDayOneWay.comment.dto.CommentResponseDto;
+import dmitreev.petproject.java.oneDayOneWay.comment.service.CommentService;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceRequestDto;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.place.service.PlaceService;
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -20,6 +25,7 @@ import java.io.IOException;
 public class UserPlaceController {
 
     private final PlaceService placeService;
+    private final CommentService commentService;
 
     @PostMapping(("/{userId}"))
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -36,6 +42,13 @@ public class UserPlaceController {
         return placeService.savePhotoToPlace(placeId, file);
     }
 
+    @PatchMapping(("/{placeId}/comments/{commentId}"))
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Add a new comment to place by user.")
+    public PlaceResponseDto saveCommentToPlace(@PathVariable Long placeId, @PathVariable Long commentId) {
+        return placeService.saveCommentToPlace(placeId, commentId);
+    }
+
     @GetMapping("/{placeId}")
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a place by its Id.")
@@ -43,4 +56,12 @@ public class UserPlaceController {
         return placeService.getPlaceById(placeId);
     }
 
+    @GetMapping("/{placeId}/comments")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a list of all places comments.")
+    public List<CommentResponseDto> getAllCommentsByPlace(@PathVariable Long placeId,
+                                                          @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                          @Positive @RequestParam(defaultValue = "10") Integer size) {
+        return commentService.getAllCommentsByPlace(placeId, from, size);
+    }
 }

@@ -7,7 +7,7 @@ Todo
 - Location ✅
 - City ✅
 - Category ✅
-- Comment
+- Comment ✅
 - Place
 - User ✅
 - Image ✅

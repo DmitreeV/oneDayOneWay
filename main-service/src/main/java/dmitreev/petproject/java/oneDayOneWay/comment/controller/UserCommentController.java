@@ -27,4 +27,26 @@ public class UserCommentController {
         return commentService.createComment(commentDto, userId, placeId);
     }
 
+    @PatchMapping("/{commentId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Update a comment by user.")
+    public CommentResponseDto updateComment(@PathVariable Long commentId, @PathVariable Long userId,
+                                            @Valid @RequestBody CommentRequestDto commentDto) {
+        return commentService.updateComment(commentId, userId, commentDto);
+    }
+
+    @DeleteMapping("/{commentId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a comment by user.")
+    public void userDeleteComment(@PathVariable Long userId,
+                                  @PathVariable Long commentId) {
+        commentService.userDeleteComment(commentId, userId);
+    }
+
+    @GetMapping("/{commentId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a comment by its Id.")
+    public CommentResponseDto getCommentById(@PathVariable Long commentId) {
+        return commentService.getCommentById(commentId);
+    }
 }

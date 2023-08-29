@@ -42,4 +42,12 @@ public class Place {
 
     @Column(name = "longitude", nullable = false)
     private float lon;
+
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+//            mappedBy = "place")
+//    private List<Comment> comments;
+//
+//    public void addCommentToPlace(Comment comment) {
+//        comments.add(comment);
+//    }
 }

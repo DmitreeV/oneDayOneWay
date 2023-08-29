@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-    Comment toComment(CommentRequestDto commentCreateDto);
+    Comment toComment(CommentRequestDto commentDto);
 
-    CommentResponseDto toCommentDto(Comment comment);
+    public CommentResponseDto toCommentDto(Comment comment);
 }

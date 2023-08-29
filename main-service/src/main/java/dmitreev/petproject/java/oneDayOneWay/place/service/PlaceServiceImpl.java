@@ -2,6 +2,10 @@ package dmitreev.petproject.java.oneDayOneWay.place.service;
 
 import dmitreev.petproject.java.oneDayOneWay.category.model.Category;
 import dmitreev.petproject.java.oneDayOneWay.category.repository.CategoryRepository;
+import dmitreev.petproject.java.oneDayOneWay.comment.dto.CommentResponseDto;
+import dmitreev.petproject.java.oneDayOneWay.comment.mapper.CommentMapper;
+import dmitreev.petproject.java.oneDayOneWay.comment.model.Comment;
+import dmitreev.petproject.java.oneDayOneWay.comment.repository.CommentRepository;
 import dmitreev.petproject.java.oneDayOneWay.error.exception.NotFoundException;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceRequestDto;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceResponseDto;
@@ -26,12 +30,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class PlaceServiceImpl implements PlaceService {
+    private final CommentRepository commentRepository;
 
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
 
     private final PlaceMapper placeMapper;
+
+    private final CommentMapper commentMapper;
 
     @Value("/Users/dmitreevalerko/dima/oneDayOneWay/photo")
     private String uploadPath;
@@ -45,7 +52,7 @@ public class PlaceServiceImpl implements PlaceService {
         place.setCreator(user);
         place.setCategory(category);
         log.info("User saved new place {}.", place.getTitle());
-        return placeMapper.toPlaceDto(placeRepository.save(place));
+        return PlaceMapper.toPlaceDto(placeRepository.save(place));
     }
 
     //add places to way
@@ -77,14 +84,24 @@ public class PlaceServiceImpl implements PlaceService {
             place.setFilename(resultFilename);
         }
         log.info("Saved new photo to place with id {}.", placeId);
-        return placeMapper.toPlaceDto(placeRepository.save(place));
+        return PlaceMapper.toPlaceDto(placeRepository.save(place));
+    }
+
+    @Override
+    public PlaceResponseDto saveCommentToPlace(Long placeId, Long commentId){
+        Place place = getPlace(placeId);
+        CommentResponseDto comment = commentMapper.toCommentDto(getComment(commentId));
+
+        PlaceResponseDto placeResponseDto = PlaceMapper.toPlaceDto(place);
+        placeResponseDto.getCommentList().add(0, comment);
+        return placeResponseDto;
     }
 
     @Override
     @Transactional(readOnly = true)
     public PlaceResponseDto getPlaceById(Long placeId) {
         log.info("Received a category with id {}.", placeId);
-        return placeMapper.toPlaceDto(getPlace(placeId));
+        return PlaceMapper.toPlaceDto(getPlace(placeId));
     }
 
     private User getUser(Long userId) {
@@ -100,5 +117,10 @@ public class PlaceServiceImpl implements PlaceService {
     private Place getPlace(Long placeId) {
         return placeRepository.findById(placeId).orElseThrow(() ->
                 new NotFoundException(String.format("Place with placeId=%d not found", placeId)));
+    }
+
+    private Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() ->
+                new NotFoundException(String.format("Comment with commentId=%d not found", commentId)));
     }
 }

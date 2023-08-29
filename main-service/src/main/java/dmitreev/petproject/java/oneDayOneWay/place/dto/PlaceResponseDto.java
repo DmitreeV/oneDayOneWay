@@ -1,7 +1,7 @@
 package dmitreev.petproject.java.oneDayOneWay.place.dto;
 
-import dmitreev.petproject.java.oneDayOneWay.category.dto.CategoryResponseDto;
-import dmitreev.petproject.java.oneDayOneWay.comment.model.Comment;
+import dmitreev.petproject.java.oneDayOneWay.category.dto.CategoryShortDto;
+import dmitreev.petproject.java.oneDayOneWay.comment.dto.CommentResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.UserShortDto;
 import lombok.*;
 
@@ -18,9 +18,9 @@ public class PlaceResponseDto {
     private String title;
     private String description;
     private UserShortDto creator;
-    private CategoryResponseDto category;
+    private CategoryShortDto category;
     private String filename;
     private float lat;
     private float lon;
-    private List<Comment> commentList;
+    private List<CommentResponseDto> commentList;
 }
