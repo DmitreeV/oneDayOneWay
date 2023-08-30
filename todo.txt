@@ -8,6 +8,6 @@ Todo
 - City ✅
 - Category ✅
 - Comment ✅
-- Place
+- Place ✅
 - User ✅
 - Image ✅

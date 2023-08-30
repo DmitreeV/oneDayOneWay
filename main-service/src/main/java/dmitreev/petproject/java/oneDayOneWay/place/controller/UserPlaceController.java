@@ -34,6 +34,14 @@ public class UserPlaceController {
         return placeService.createPlace(userId, placeRequestDto);
     }
 
+    @PatchMapping("/{userId}/{placeId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Update a place by user.")
+    public PlaceResponseDto updatePlaceByCreator(@PathVariable Long userId, @PathVariable Long placeId,
+                                                 @Valid @RequestBody PlaceRequestDto placeRequestDto) {
+        return placeService.updatePlaceByCreator(userId, placeId, placeRequestDto);
+    }
+
     @PatchMapping(("/{placeId}/file"))
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Create a new photo to place by user.")
@@ -63,5 +71,13 @@ public class UserPlaceController {
                                                           @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                                           @Positive @RequestParam(defaultValue = "10") Integer size) {
         return commentService.getAllCommentsByPlace(placeId, from, size);
+    }
+
+    @DeleteMapping("/{userId}/{placeId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a place by user.")
+    public void userDeletePlace(@PathVariable Long userId,
+                                @PathVariable Long placeId) {
+        placeService.userDeletePlace(userId, placeId);
     }
 }

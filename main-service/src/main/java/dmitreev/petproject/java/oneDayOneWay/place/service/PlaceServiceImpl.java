@@ -6,6 +6,7 @@ import dmitreev.petproject.java.oneDayOneWay.comment.dto.CommentResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.comment.mapper.CommentMapper;
 import dmitreev.petproject.java.oneDayOneWay.comment.model.Comment;
 import dmitreev.petproject.java.oneDayOneWay.comment.repository.CommentRepository;
+import dmitreev.petproject.java.oneDayOneWay.error.exception.ConflictException;
 import dmitreev.petproject.java.oneDayOneWay.error.exception.NotFoundException;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceRequestDto;
 import dmitreev.petproject.java.oneDayOneWay.place.dto.PlaceResponseDto;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -53,6 +55,27 @@ public class PlaceServiceImpl implements PlaceService {
         place.setCategory(category);
         log.info("User saved new place {}.", place.getTitle());
         return PlaceMapper.toPlaceDto(placeRepository.save(place));
+    }
+
+    @Override
+    public PlaceResponseDto updatePlaceByCreator(Long userId, Long placeId, PlaceRequestDto placeRequestDto) {
+        Place placeToUpdate = getPlace(placeId);
+        Place place = placeMapper.toPlace(placeRequestDto);
+
+        if (!placeToUpdate.getCreator().getId().equals(userId)) {
+            throw new ConflictException("Only a creator can change a place info.");
+        }
+        placeToUpdate.setCategory(place.getCategory());
+        placeToUpdate.setDescription(place.getDescription());
+        if (placeRequestDto.getFilename() != null) {
+            placeToUpdate.setFilename(place.getFilename());
+        }
+        placeToUpdate.setTitle(place.getTitle());
+        placeToUpdate.setLat(place.getLat());
+        placeToUpdate.setLon(place.getLon());
+
+        log.info("Updated place with id {}.", placeId);
+        return PlaceMapper.toPlaceDto(placeRepository.save(placeToUpdate));
     }
 
     //add places to way
@@ -88,20 +111,32 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public PlaceResponseDto saveCommentToPlace(Long placeId, Long commentId){
-        Place place = getPlace(placeId);
-        CommentResponseDto comment = commentMapper.toCommentDto(getComment(commentId));
-
-        PlaceResponseDto placeResponseDto = PlaceMapper.toPlaceDto(place);
-        placeResponseDto.getCommentList().add(0, comment);
-        return placeResponseDto;
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public PlaceResponseDto getPlaceById(Long placeId) {
         log.info("Received a category with id {}.", placeId);
         return PlaceMapper.toPlaceDto(getPlace(placeId));
+    }
+
+    @Override
+    public PlaceResponseDto saveCommentToPlace(Long placeId, Long commentId) {
+        Place place = getPlace(placeId);
+        CommentResponseDto comment = commentMapper.toCommentDto(getComment(commentId));
+
+        PlaceResponseDto placeResponseDto = PlaceMapper.toPlaceDto(place);
+        placeResponseDto.getCommentList().add(comment);
+        return placeResponseDto;
+    }
+
+    @Override
+    public void userDeletePlace(Long userId, Long placeId) {
+        getUser(userId);
+        Place place = getPlace(placeId);
+
+        if (!Objects.equals(place.getCreator().getId(), userId)) {
+            throw new ConflictException("Only the creator can delete a place.");
+        }
+        placeRepository.deleteById(placeId);
+        log.info("The place was deleted by the user {}.", userId);
     }
 
     private User getUser(Long userId) {

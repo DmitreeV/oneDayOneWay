@@ -9,7 +9,13 @@ import java.io.IOException;
 public interface PlaceService {
 
     PlaceResponseDto createPlace(Long userId, PlaceRequestDto placeRequestDto);
+
+    PlaceResponseDto updatePlaceByCreator(Long userId, Long placeId, PlaceRequestDto placeRequestDto);
+
     PlaceResponseDto savePhotoToPlace(Long placeId, MultipartFile file) throws IOException;
+
+    void userDeletePlace(Long userId, Long placeId);
+
     PlaceResponseDto getPlaceById(Long placeId);
     PlaceResponseDto saveCommentToPlace(Long placeId, Long commentId);
 }
