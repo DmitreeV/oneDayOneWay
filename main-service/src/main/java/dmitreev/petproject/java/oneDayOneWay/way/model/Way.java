@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,13 +35,24 @@ public class Way {
     private User creator;
 
     @ManyToOne
+    @JoinColumn(name = "location_id")
+    @ToString.Exclude
     private Location location;
 
     @Column(name = "created_on")
     private LocalDateTime createdOn;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-            mappedBy = "way")
-    private List<Place> places;
+    @ManyToMany
+    @JoinTable(
+            name = "ways_places",
+            joinColumns = @JoinColumn(name = "way_id"),
+            inverseJoinColumns = @JoinColumn(name = "place_id")
+    )
+    @ToString.Exclude
+    private List<Place> places = new ArrayList<>();
 
+
+    public void addPlaceToWay(Place place) {
+        places.add(place);
+    }
 }

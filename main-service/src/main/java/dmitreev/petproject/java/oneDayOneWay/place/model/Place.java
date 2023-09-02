@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 @Table(name = "places")
 public class Place {
 
@@ -42,6 +43,9 @@ public class Place {
 
     @Column(name = "longitude", nullable = false)
     private float lon;
+
+//    @ManyToOne
+//    private Way way;
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
 //            mappedBy = "place")
