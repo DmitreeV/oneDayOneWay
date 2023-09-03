@@ -19,10 +19,33 @@ public class UserWayController {
 
     private final WayService wayService;
 
-    @PostMapping(("/{userId}/{placeId}"))
+    @PostMapping("/{userId}/{placeId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @Operation(summary = "Create a new place by user.")
+    @Operation(summary = "Create a new way by user.")
     public WayResponseDto createWay(@Valid @RequestBody WayRequestDto wayRequestDto, @PathVariable Long userId, @PathVariable Long placeId) {
         return wayService.createWay(wayRequestDto, userId, placeId);
+    }
+
+    @PatchMapping("/{wayId}/{placeId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Add new place to way.")
+    public WayResponseDto addPlaceToWay(@PathVariable Long wayId, @PathVariable Long placeId) {
+        return wayService.addPlaceToWay(wayId, placeId);
+    }
+
+    @PatchMapping("/{userId}/{wayId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Update way info by user.")
+    public WayResponseDto updateWayByCreator(@PathVariable Long userId, @PathVariable Long wayId,
+                                             @Valid @RequestBody WayRequestDto wayRequestDto) {
+        return wayService.updateWayByCreator(userId, wayId, wayRequestDto);
+    }
+
+    @DeleteMapping("/{userId}/{wayId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a way by user.")
+    public void userDeleteWay(@PathVariable Long userId,
+                              @PathVariable Long wayId) {
+        wayService.userDeleteWay(userId, wayId);
     }
 }

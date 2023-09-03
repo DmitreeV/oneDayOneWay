@@ -5,8 +5,12 @@ import dmitreev.petproject.java.oneDayOneWay.way.dto.WayResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.way.model.Way;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static dmitreev.petproject.java.oneDayOneWay.location.mapper.LocationMapper.toLocationShortDto;
 import static dmitreev.petproject.java.oneDayOneWay.user.mapper.UserMapper.toUserShortDto;
@@ -27,5 +31,12 @@ public interface WayMapper {
                 .createdOn(String.valueOf(LocalDateTime.now()))
                 .places(String.valueOf(way.getPlaces()))
                 .build();
+    }
+
+    public static List<WayResponseDto> toWaysDto(Page<Way> ways) {
+        return ways.stream()
+                .map(WayMapper::toWayDto)
+                .sorted(Comparator.comparing(WayResponseDto::getCreatedOn))
+                .collect(Collectors.toList());
     }
 }

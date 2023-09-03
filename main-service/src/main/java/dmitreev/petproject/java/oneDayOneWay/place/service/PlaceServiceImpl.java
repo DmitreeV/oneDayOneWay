@@ -78,20 +78,6 @@ public class PlaceServiceImpl implements PlaceService {
         return PlaceMapper.toPlaceDto(placeRepository.save(placeToUpdate));
     }
 
-    //add places to way
-//    private void validateLocation(Location location, Place place) {
-//        double distance;
-//        double x1 = location.getLat();
-//        double y1 = location.getLon();
-//        double x2 = place.getLat();
-//        double y2 = place.getLon();
-//
-//        distance = Math.exp(Math.sqrt(2) / Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-//        if (distance < 2) {
-//
-//        }
-//    }
-
     @Override
     public PlaceResponseDto savePhotoToPlace(Long placeId, MultipartFile file) throws IOException {
         Place place = getPlace(placeId);
