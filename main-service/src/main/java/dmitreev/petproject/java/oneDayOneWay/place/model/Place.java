@@ -1,10 +1,13 @@
 package dmitreev.petproject.java.oneDayOneWay.place.model;
 
 import dmitreev.petproject.java.oneDayOneWay.category.model.Category;
+import dmitreev.petproject.java.oneDayOneWay.comment.model.Comment;
 import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,14 +47,16 @@ public class Place {
     @Column(name = "longitude", nullable = false)
     private float lon;
 
-//    @ManyToOne
-//    private Way way;
+    @ManyToMany
+    @JoinTable(
+            name = "places_comments",
+            joinColumns = @JoinColumn(name = "place_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-//            mappedBy = "place")
-//    private List<Comment> comments;
-//
-//    public void addCommentToPlace(Comment comment) {
-//        comments.add(comment);
-//    }
+    public void addCommentToPlace(Comment comment) {
+        comments.add(comment);
+    }
 }

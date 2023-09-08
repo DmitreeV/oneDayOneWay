@@ -42,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setAuthor(user);
         comment.setPlace(place);
         comment.setCreated(LocalDateTime.now());
+        place.addCommentToPlace(comment);
         log.info("Saved new comment : < {} > to the place : {}", commentDto.getText(), place.getTitle());
         return commentMapper.toCommentDto(commentRepository.save(comment));
     }

@@ -6,8 +6,6 @@ import dmitreev.petproject.java.oneDayOneWay.place.model.Place;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.ArrayList;
-
 import static dmitreev.petproject.java.oneDayOneWay.category.mapper.CategoryMapper.toCategoryShortDto;
 import static dmitreev.petproject.java.oneDayOneWay.user.mapper.UserMapper.toUserShortDto;
 
@@ -27,7 +25,7 @@ public interface PlaceMapper {
                 .filename(place.getFilename())
                 .lat(place.getLat())
                 .lon(place.getLon())
-                .commentList(new ArrayList<>())
+                .comments(String.valueOf(place.getComments()))
                 .build();
     }
 }

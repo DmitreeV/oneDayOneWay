@@ -1,11 +1,8 @@
 package dmitreev.petproject.java.oneDayOneWay.place.dto;
 
 import dmitreev.petproject.java.oneDayOneWay.category.dto.CategoryShortDto;
-import dmitreev.petproject.java.oneDayOneWay.comment.dto.CommentResponseDto;
 import dmitreev.petproject.java.oneDayOneWay.user.dto.UserShortDto;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -22,5 +19,5 @@ public class PlaceResponseDto {
     private String filename;
     private float lat;
     private float lon;
-    private List<CommentResponseDto> commentList;
+    private String comments;
 }

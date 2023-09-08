@@ -5,7 +5,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>main-service</module>
-		<module>auth-service</module>
 	</modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>

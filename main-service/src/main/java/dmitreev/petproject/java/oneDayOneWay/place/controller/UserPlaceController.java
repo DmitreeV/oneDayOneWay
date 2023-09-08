@@ -50,13 +50,6 @@ public class UserPlaceController {
         return placeService.savePhotoToPlace(placeId, file);
     }
 
-    @PatchMapping(("/{placeId}/comments/{commentId}"))
-    @ResponseStatus(value = HttpStatus.OK)
-    @Operation(summary = "Add a new comment to place by user.")
-    public PlaceResponseDto saveCommentToPlace(@PathVariable Long placeId, @PathVariable Long commentId) {
-        return placeService.saveCommentToPlace(placeId, commentId);
-    }
-
     @GetMapping("/{placeId}")
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a place by its Id.")

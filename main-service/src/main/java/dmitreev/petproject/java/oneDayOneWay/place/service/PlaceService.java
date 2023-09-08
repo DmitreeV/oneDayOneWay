@@ -17,5 +17,4 @@ public interface PlaceService {
     void userDeletePlace(Long userId, Long placeId);
 
     PlaceResponseDto getPlaceById(Long placeId);
-    PlaceResponseDto saveCommentToPlace(Long placeId, Long commentId);
 }
