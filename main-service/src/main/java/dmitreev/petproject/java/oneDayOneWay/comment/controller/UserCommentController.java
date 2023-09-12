@@ -35,18 +35,18 @@ public class UserCommentController {
         return commentService.updateComment(commentId, userId, commentDto);
     }
 
+    @GetMapping("/{commentId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a comment by its Id.")
+    public CommentResponseDto getCommentById(@PathVariable Long commentId) {
+        return commentService.getCommentById(commentId);
+    }
+
     @DeleteMapping("/{commentId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a comment by user.")
     public void userDeleteComment(@PathVariable Long userId,
                                   @PathVariable Long commentId) {
         commentService.userDeleteComment(commentId, userId);
-    }
-
-    @GetMapping("/{commentId}")
-    @ResponseStatus(value = HttpStatus.OK)
-    @Operation(summary = "Returns a comment by its Id.")
-    public CommentResponseDto getCommentById(@PathVariable Long commentId) {
-        return commentService.getCommentById(commentId);
     }
 }

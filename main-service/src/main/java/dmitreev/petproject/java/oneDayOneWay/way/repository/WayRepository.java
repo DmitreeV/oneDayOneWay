@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface WayRepository extends JpaRepository<Way, Long> {
 
     @Query(value = "select * from ways " +
-            "where (lower(location) like '%' || ?1 || '%')",
+            "where (lower(location_id) like '%' || ?1 || '%')",
             nativeQuery = true)
     Page<Way> searchWaysByLocationName(String query, Pageable page);
 }

@@ -10,7 +10,6 @@ import dmitreev.petproject.java.oneDayOneWay.user.model.User;
 import dmitreev.petproject.java.oneDayOneWay.user.repository.UserRepository;
 import dmitreev.petproject.java.oneDayOneWay.way.dto.WayRequestDto;
 import dmitreev.petproject.java.oneDayOneWay.way.dto.WayResponseDto;
-import dmitreev.petproject.java.oneDayOneWay.way.mapper.WayMapper;
 import dmitreev.petproject.java.oneDayOneWay.way.model.Way;
 import dmitreev.petproject.java.oneDayOneWay.way.repository.WayRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +37,6 @@ public class WayServiceImpl implements WayService {
     private final WayRepository wayRepository;
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
-    private final WayMapper wayMapper;
 
     @Override
     public WayResponseDto createWay(WayRequestDto wayRequestDto, Long userId, Long placeId) {

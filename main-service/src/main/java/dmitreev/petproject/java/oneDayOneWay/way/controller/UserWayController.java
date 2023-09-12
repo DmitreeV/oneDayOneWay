@@ -33,14 +33,6 @@ public class UserWayController {
         return wayService.addPlaceToWay(wayId, placeId);
     }
 
-    @PatchMapping("/{userId}/{wayId}")
-    @ResponseStatus(value = HttpStatus.OK)
-    @Operation(summary = "Update way info by user.")
-    public WayResponseDto updateWayByCreator(@PathVariable Long userId, @PathVariable Long wayId,
-                                             @Valid @RequestBody WayRequestDto wayRequestDto) {
-        return wayService.updateWayByCreator(userId, wayId, wayRequestDto);
-    }
-
     @DeleteMapping("/{userId}/{wayId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a way by user.")

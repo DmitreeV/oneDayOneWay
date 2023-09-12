@@ -1,0 +1,2269 @@
+{
+	"info": {
+		"_postman_id": "d66f7c1a-7164-43f4-8eeb-753dd78ea8ca",
+		"name": "OneDayOneWayApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26544155"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Регистрация пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"username\": \"Dmitree93\",\n   \"password\": \"1993\",\n   \"confirmPassword\": \"1993\",\n   \"email\": \"dmitree@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Авторизация",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"username\": \"admin\",\n   \"password\": \"100\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Получение списка пользователей администратором",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEbWl0cmVlOTMiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjkwNDAzMzk5LCJpYXQiOjE2OTA0MDI3OTl9.EL2ZRENcaSBIoRIMl11E-WQWemoxrkJy9NDeg1FaUhM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/users?from=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение данных о пользователе по его идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Пользователь должен содержать поля: id, username, email\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('username');",
+									"pm.expect(target).to.have.property('email');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNjkwMzA2NTc3LCJpYXQiOjE2OTAzMDU5Nzd9.B7B9gOWFmNTD61LSC_Qbe-HHtIfZOczdiKPhWp7oBRs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/users/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление пользователя администратором",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNjkwMzA2NTc3LCJpYXQiOjE2OTAzMDU5Nzd9.B7B9gOWFmNTD61LSC_Qbe-HHtIfZOczdiKPhWp7oBRs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/users/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2",
+									"description": "user id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "Администратор добавляет новую категорию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Категория должна содержать поля: id, name\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('name');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\": \"Museum\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Администратор изменяет данные категории",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Категория должна содержать поля: id, name\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('name');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\": \"Bar\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/categories/:catId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"categories",
+								":catId"
+							],
+							"variable": [
+								{
+									"key": "catId",
+									"value": "1",
+									"description": "category id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь получает список категорий",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Категория должна содержать поля: id, name\", function () {",
+									"pm.expect(target[0]).to.have.property('id');",
+									"pm.expect(target[0]).to.have.property('name');",
+									"});",
+									"",
+									"pm.test(\"Должна быть найдена только одна категория\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации о категории по ее идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Категория должна содержать поля: id, name\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('name');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/categories/:catId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"categories",
+								":catId"
+							],
+							"variable": [
+								{
+									"key": "catId",
+									"value": "1",
+									"description": "category Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Администратор удаляет категорию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/categories/:catId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"categories",
+								":catId"
+							],
+							"variable": [
+								{
+									"key": "catId",
+									"value": "1",
+									"description": "category id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "location",
+			"item": [
+				{
+					"name": "Администратор добавляет новую локацию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Локация должна содержать поля: name, lat, lon, radius\", function () {",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('radius');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Saint-Petersburg\",\n  \"lat\": 59.93,\n  \"lon\": 30.31,\n  \"radius\": 99\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Попытка добавить локацию с некорректным радиусом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Санкт-Петербург\",\n  \"lat\": 59.93,\n  \"lon\": 30.31,\n  \"radius\": 100000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Администратор изменяет данные локации",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Локация должна содержать поля: name, lat, lon, radius\", function () {",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('radius');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ленинград\",\n  \"lat\": 59.98,\n  \"lon\": 30.63,\n  \"radius\": 95\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/locations/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "1",
+									"description": "location id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь получает список локаций",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"",
+									"pm.test(\"Должна быть найдена только одна локация\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение данных о локации по ее идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Локация должна содержать поля: name, lat, lon, radius\", function () {",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('radius');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/locations/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"locations",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "1",
+									"description": "location id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Администратор удаляет локацию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/locations/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "1",
+									"description": "location id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "place",
+			"item": [
+				{
+					"name": "Пользователь добавляет новое место",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Место должно содержать поля: id, title, description, creator, category, filename, lat, lon, comments\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('filename');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('comments');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEbWl0cmVlOTMiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjkwNDAxOTY3LCJpYXQiOjE2OTA0MDEzNjd9.M3q_BtAhlVWAu0ZYGKQygEVwLJw1wrgDrdmbzSyb25Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"title\": \"St. Isaac's Cathedral\",\n   \"description\": \"description\",\n   \"category\": 1,\n   \"lat\": 59.93465,\n    \"lon\": 30.30621\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь добавляет место 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Место должно содержать поля: id, title, description, creator, category, filename, lat, lon, comments\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('filename');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('comments');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"title\": \"Эрмитаж\",\n   \"description\": \"description\",\n   \"category\": 1,\n   \"lat\": 59.94043,\n    \"lon\": 30.31462\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user  Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь редактирует данные места 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Место должно содержать поля: id, title, description, creator, category, filename, lat, lon, comments\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('filename');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('comments');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"title\": \"Hermitage\",\n   \"description\": \"The most beautiful museum\",\n   \"category\": 1,\n   \"lat\": 59.94043,\n    \"lon\": 30.31462\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:userId/:placeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":userId",
+								":placeId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "placeId",
+									"value": "2",
+									"description": "place2 id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь добавляет место 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Место должно содержать поля: id, title, description, creator, category, filename, lat, lon, comments\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('filename');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('comments');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"title\": \"Erarta Museum.\",\n   \"description\": \"Museum of Modern Art.\",\n   \"category\": 1,\n   \"lat\": 59.97006,\n    \"lon\": 30.38808\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь добавляет фото к месту",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Место должно содержать поля: id, title, description, creator, category, filename, lat, lon, comments\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('filename');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('comments');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/dmitreevalerko/dima/files/02a4e509-bbe5-4547-94fa-724b7ab865d2.Saint_Isaac's_Cathedral_in_SPB — малый размер.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:placeId/file?file",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":placeId",
+								"file"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null
+								}
+							],
+							"variable": [
+								{
+									"key": "placeId",
+									"value": "1",
+									"description": "place Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации о месте по его идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json()",
+									"",
+									"pm.test(\"Место должно содержать поля: id, title, description, creator, category, filename, lat, lon, comments\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('filename');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('comments');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:placeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":placeId"
+							],
+							"variable": [
+								{
+									"key": "placeId",
+									"value": "1",
+									"description": "place id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех комментариев места",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должен быть найден только один комментарий\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:placeId/comments?from=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":placeId",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "placeId",
+									"value": "1",
+									"description": "place id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь удаляет добавленное им место",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/places/:userId/:placeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"places",
+								":userId",
+								":placeId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "placeId",
+									"value": "3",
+									"description": "place 3 id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comment",
+			"item": [
+				{
+					"name": "Пользователь добавляет новый комментарий месту",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Комментарий должен содержать поля: id, text, authorName, created\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('text');",
+									"pm.expect(target).to.have.property('authorName');",
+									"pm.expect(target).to.have.property('created');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"A beautiful cathedral, impressive in scale!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/:userId/comments/:placeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								":userId",
+								"comments",
+								":placeId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "placeId",
+									"value": "1",
+									"description": "place id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Автор  редактирует свой комментарий",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Комментарий должен содержать поля: id, text, authorName, created\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('text');",
+									"pm.expect(target).to.have.property('authorName');",
+									"pm.expect(target).to.have.property('created');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"A beautiful cathedral, impressive in scale! I recommend going up to the colonnade, there is a beautiful view from there!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/:userId/comments/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								":userId",
+								"comments",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "commentId",
+									"value": "1",
+									"description": "comment id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации о комментарии по его идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json()",
+									"",
+									"pm.test(\"Комментарий должен содержать поля: id, text, authorName, created\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('text');",
+									"pm.expect(target).to.have.property('authorName');",
+									"pm.expect(target).to.have.property('created');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/:userId/comments/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								":userId",
+								"comments",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "commentId",
+									"value": "1",
+									"description": "comment id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь удаляет свой комментарий",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/:userId/comments/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								":userId",
+								"comments",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "commentId",
+									"value": "1",
+									"description": "comment id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "way",
+			"item": [
+				{
+					"name": "Пользователь добавляет новый маршрут",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Маршрут должен содержать поля: id, title, description, creator, createdOn, location, places\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('createdOn');",
+									"pm.expect(target).to.have.property('location');",
+									"pm.expect(target).to.have.property('places');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"title\": \"Museum itinerary.\",\n   \"description\": \"This route takes you through the best museums in the city.\",\n   \"location\": \"Saint-Petersburg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/secured/ways/:userId/:placeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"ways",
+								":userId",
+								":placeId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "placeId",
+									"value": "1",
+									"description": "place id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь добавляет место 2 в маршрут",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Маршрут должен содержать поля: id, title, description, creator, createdOn, location, places\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('createdOn');",
+									"pm.expect(target).to.have.property('location');",
+									"pm.expect(target).to.have.property('places');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/ways/:wayId/:placeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"ways",
+								":wayId",
+								":placeId"
+							],
+							"variable": [
+								{
+									"key": "wayId",
+									"value": "1",
+									"description": "way Id"
+								},
+								{
+									"key": "placeId",
+									"value": "2",
+									"description": "place Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Попытка добавить место далее чем 2 км",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/ways/:wayId/:placeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"ways",
+								":wayId",
+								":placeId"
+							],
+							"variable": [
+								{
+									"key": "wayId",
+									"value": "1",
+									"description": "way Id"
+								},
+								{
+									"key": "placeId",
+									"value": "3",
+									"description": "place 3 Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка маршрутов по названию локации",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должнен быть найден только один маршрут\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/info/ways/search?locationName=Saint-Petersburg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"info",
+								"ways",
+								"search"
+							],
+							"query": [
+								{
+									"key": "locationName",
+									"value": "Saint-Petersburg"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка маршрутов с сортировкой от нового к старому",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должнен быть найден только один маршрут\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/info/ways?from=0&size=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"info",
+								"ways"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации о маршруте по его идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json()",
+									"",
+									"",
+									"pm.test(\"Маршрут должен содержать поля: id, title, description, creator, createdOn, location, places\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('title');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('creator');",
+									"pm.expect(target).to.have.property('createdOn');",
+									"pm.expect(target).to.have.property('location');",
+									"pm.expect(target).to.have.property('places');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/info/ways/:wayId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"info",
+								"ways",
+								":wayId"
+							],
+							"variable": [
+								{
+									"key": "wayId",
+									"value": "1",
+									"description": "way id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь удаляет созданный им маршрут",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDU3NDM4MSwiaWF0IjoxNjkwNTczNzgxfQ.y9ekpvDDrPmqTDRXRtItziD1Ts1R21Z5L0SCUBDSVKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/secured/ways/:userId/:wayId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"secured",
+								"ways",
+								":userId",
+								":wayId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "wayId",
+									"value": "1",
+									"description": "way id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
