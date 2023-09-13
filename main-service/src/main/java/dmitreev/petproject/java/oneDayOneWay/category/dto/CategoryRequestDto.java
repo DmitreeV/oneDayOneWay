@@ -1,5 +1,6 @@
 package dmitreev.petproject.java.oneDayOneWay.category.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -13,5 +14,6 @@ import javax.validation.constraints.NotBlank;
 public class CategoryRequestDto {
 
     @NotBlank(message = "'name' can not be blank")
+    @Schema(example = "Museum")
     private String name;
 }

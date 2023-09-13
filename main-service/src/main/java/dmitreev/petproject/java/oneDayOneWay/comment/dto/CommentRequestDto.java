@@ -1,5 +1,6 @@
 package dmitreev.petproject.java.oneDayOneWay.comment.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,6 @@ public class CommentRequestDto {
 
     @NotBlank(message = "'text' can not be blank")
     @Size(min = 1, max = 2000)
+    @Schema(example = "A beautiful cathedral, impressive in scale!")
     private String text;
 }
