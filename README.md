@@ -3,7 +3,6 @@
 <p align="center"></p>
 </div>
 
-</details>
 <details><summary><b>Содержание</b></summary>
   
     1. Краткое описание
